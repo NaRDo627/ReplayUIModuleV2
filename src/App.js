@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+// for test
+import Pubg from "./pages/Pubg"
+
 class App extends Component {
 
   state = { username: null };
@@ -13,21 +16,22 @@ class App extends Component {
   // }
 
 render() {
-  const { username } = this.state;
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1 className="App-title">Welcome to React</h1>
-      </header>
-      <p className="App-intro">
-        To get started, edit <code>src/App.js</code> and save to reload.
-      </p>
-        <div>
-            {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-        </div>
-    </div>
-  );
+  // const { username } = this.state;
+  // return (
+  //   <div className="App">
+  //     <header className="App-header">
+  //       <img src={logo} className="App-logo" alt="logo" />
+  //       <h1 className="App-title">Welcome to React</h1>
+  //     </header>
+  //     <p className="App-intro">
+  //       To get started, edit <code>src/App.js</code> and save to reload.
+  //     </p>
+  //       <div>
+  //           {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
+  //       </div>
+  //   </div>
+  // );
+  return ( <Pubg /> );
 }
 }
 

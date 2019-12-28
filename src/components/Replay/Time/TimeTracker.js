@@ -2,16 +2,19 @@ import React from 'react'
 import { clamp } from 'lodash'
 
 class TimeTracker extends React.Component {
-    state = {
-        autoplaySpeed: 10,
-        msSinceEpoch: 1000,
-        autoplay: false,
-    }
+    // state = {
+    //     autoplaySpeed: 10,
+    //     msSinceEpoch: 1000,
+    //     autoplay: false,
+    // }
 
     clampAutoplaySpeed = val => clamp(val, 1, 50)
     clampMsSinceEpoch = val => clamp(val, 1000, this.props.durationSeconds * 1000)
-    setMsSinceEpoch = val => { this.setState({ msSinceEpoch: this.clampMsSinceEpoch(val) }) }
-    setAutoplaySpeed = val => { this.setState({ autoplaySpeed: this.clampAutoplaySpeed(val) }) }
+    setMsSinceEpoch = val => this.props.changeMsSinceEpochTo(this.clampMsSinceEpoch(val))
+    setAutoplaySpeed = val => this.props.changeAutoplaySpeedTo(this.clampAutoplaySpeed(val))
+
+    // setMsSinceEpoch = val => { this.setState({ msSinceEpoch: this.clampMsSinceEpoch(val) }) }
+    // setAutoplaySpeed = val => { this.setState({ autoplaySpeed: this.clampAutoplaySpeed(val) }) }
 
     onKeydown = e => {
         if (e.target.tagName.toLowerCase() === 'input') return
@@ -23,40 +26,46 @@ class TimeTracker extends React.Component {
 
         if (e.keyCode === 37) { // Left Arrow
             e.preventDefault()
-            if (this.state.autoplay) this.stopAutoplay()
-
-            this.setState(({ msSinceEpoch, autoplaySpeed }) => ({
-                msSinceEpoch: this.clampMsSinceEpoch(msSinceEpoch - (autoplaySpeed * 100)),
-            }))
+            if (this.props.autoplay) this.stopAutoplay()
+            const { msSinceEpoch, autoplaySpeed } = this.props;
+            // this.setState(({ msSinceEpoch, autoplaySpeed }) => ({
+            //     msSinceEpoch: this.clampMsSinceEpoch(msSinceEpoch - (autoplaySpeed * 100)),
+            // }))
+            this.props.changeMsSinceEpochTo(this.clampMsSinceEpoch(msSinceEpoch - (autoplaySpeed * 100)));
         }
 
         if (e.keyCode === 39) { // Right Arrow
             e.preventDefault()
-            if (this.state.autoplay) this.stopAutoplay()
-
-            this.setState(({ msSinceEpoch, autoplaySpeed }) => ({
-                msSinceEpoch: this.clampMsSinceEpoch(msSinceEpoch + (autoplaySpeed * 100)),
-            }))
+            if (this.props.autoplay) this.stopAutoplay()
+            const { msSinceEpoch, autoplaySpeed } = this.props;
+            // this.setState(({ msSinceEpoch, autoplaySpeed }) => ({
+            //     msSinceEpoch: this.clampMsSinceEpoch(msSinceEpoch + (autoplaySpeed * 100)),
+            // }))
+            this.props.changeMsSinceEpochTo(this.clampMsSinceEpoch(msSinceEpoch + (autoplaySpeed * 100)));
         }
 
         if (e.keyCode === 40) { // Down Arrow
             e.preventDefault()
-            this.setState(({ autoplaySpeed }) => ({
-                autoplaySpeed: this.clampAutoplaySpeed(autoplaySpeed - 1),
-            }))
+            // this.setState(({ autoplaySpeed }) => ({
+            //     autoplaySpeed: this.clampAutoplaySpeed(autoplaySpeed - 1),
+            // }))
+            const { autoplaySpeed } = this.props;
+            this.props.changeAutoplaySpeedTo(this.clampAutoplaySpeed(autoplaySpeed - 1));
         }
 
         if (e.keyCode === 38) { // Up Arrow
             e.preventDefault()
-            this.setState(({ autoplaySpeed }) => ({
-                autoplaySpeed: this.clampAutoplaySpeed(autoplaySpeed + 1),
-            }))
+            // this.setState(({ autoplaySpeed }) => ({
+            //     autoplaySpeed: this.clampAutoplaySpeed(autoplaySpeed + 1),
+            // }))
+            const { autoplaySpeed } = this.props;
+            this.props.changeAutoplaySpeedTo(this.clampAutoplaySpeed(autoplaySpeed + 1));
         }
     }
 
     componentDidMount() {
         this.mounted = true
-        if (this.state.autoplay) setTimeout(this.startAutoplay, 300)
+        if (this.props.autoplay) setTimeout(this.startAutoplay, 300)
         window.addEventListener('keydown', this.onKeydown)
 
         // Handle devtools options
@@ -75,7 +84,8 @@ class TimeTracker extends React.Component {
 
         setTimeout(this.toggleAutoplay, 100)
 
-        this.setState({ autoplaySpeed: this.props.autoplaySpeed })
+        this.props.changeAutoplaySpeedTo(this.props.autoplaySpeed)
+        // this.setState({ autoplaySpeed: this.props.autoplaySpeed })
     }
 
     componentWillUnmount() {
@@ -85,75 +95,90 @@ class TimeTracker extends React.Component {
     }
 
     loop = time => {
-        if (!this.state.autoplay || !this.mounted) return
+        if (!this.props.autoplay || !this.mounted) return
 
         const elapsedTime = time - this.rafLastTime
         this.rafLastTime = time
 
-        this.setState(({ msSinceEpoch, autoplaySpeed }) => {
-            if (Math.floor(msSinceEpoch / 1000) >= this.props.durationSeconds) {
-                cancelAnimationFrame(this.rafId)
-                return { autoplay: false }
-            }
+        // this.setState(({ msSinceEpoch, autoplaySpeed }) => {
+        //     if (Math.floor(msSinceEpoch / 1000) >= this.props.durationSeconds) {
+        //         cancelAnimationFrame(this.rafId)
+        //         return { autoplay: false }
+        //     }
 
-            return { msSinceEpoch: this.clampMsSinceEpoch(msSinceEpoch + (autoplaySpeed * elapsedTime)) }
-        })
+        //     return { msSinceEpoch: this.clampMsSinceEpoch(msSinceEpoch + (autoplaySpeed * elapsedTime)) }
+        // })
+
+        const { msSinceEpoch, autoplaySpeed } = this.props;
+        if (Math.floor(msSinceEpoch / 1000) >= this.props.durationSeconds) {
+            cancelAnimationFrame(this.rafId)
+            this.props.stopAutoplay();
+        }
+        else
+            this.props.changeMsSinceEpochTo(this.clampMsSinceEpoch(msSinceEpoch + (autoplaySpeed * elapsedTime)))
 
         this.rafId = requestAnimationFrame(this.loop)
     }
 
     startAutoplay = () => {
         this.rafLastTime = performance.now()
-        this.setState({ autoplay: true })
+     //   this.setState({ autoplay: true })
+        this.props.startAutoplay();
         this.rafId = requestAnimationFrame(this.loop)
     }
 
     stopAutoplay = () => {
         cancelAnimationFrame(this.rafId)
-        this.setState({ autoplay: false })
+        // this.setState({ autoplay: false })
+        this.props.stopAutoplay();
     }
 
     toggleAutoplay = () => {
-        if (this.state.autoplay) {
+        if (this.props.autoplay) {
             this.stopAutoplay()
         } else {
-            if (this.state.msSinceEpoch === this.props.durationSeconds * 1000) {
-                this.setState({ msSinceEpoch: 1000 })
+            if (this.props.msSinceEpoch === this.props.durationSeconds * 1000) {
+                // this.setState({ msSinceEpoch: 1000 })
+                this.props.changeMsSinceEpochTo(1000);
             }
             this.startAutoplay()
         }
     }
 
     rewindToStart = () => {
-        if (this.state.autoplay) {
+        if (this.props.autoplay) {
             this.stopAutoplay()
         }
 
-        this.setState({ msSinceEpoch: 1000 })
+        // this.setState({ msSinceEpoch: 1000 })
+        this.changeMsSinceEpochTo(1000)
     }
 
     skip30sForward = () => {
-        const curMsSinceEpoch = this.state.msSinceEpoch
-        this.setState({ msSinceEpoch: curMsSinceEpoch + 30000 })
+        const curMsSinceEpoch = this.props.msSinceEpoch
+        //this.setState({ msSinceEpoch: curMsSinceEpoch + 30000 })
+        this.props.changeMsSinceEpochTo(curMsSinceEpoch + 30000);
     }
 
     skip30sReverse = () => {
-        const curMsSinceEpoch = this.state.msSinceEpoch
-        this.setState({ msSinceEpoch: curMsSinceEpoch - 30000 })
+        const curMsSinceEpoch = this.props.msSinceEpoch
+        // this.setState({ msSinceEpoch: curMsSinceEpoch - 30000 })
+        this.props.changeMsSinceEpochTo(curMsSinceEpoch - 30000);
     }
 
     skipTo = newMsSinceEpoch => {
-        this.setState({ msSinceEpoch: newMsSinceEpoch })
+        // this.setState({ msSinceEpoch: newMsSinceEpoch })
+        this.props.changeMsSinceEpochTo(newMsSinceEpoch);
     }
 
     render() {
         const { replayData } = this.props
         const renderProps = {
-            msSinceEpoch: this.state.msSinceEpoch,
-            currentReplayData: replayData && replayData.stateAt(this.state.msSinceEpoch),
+            msSinceEpoch: this.props.msSinceEpoch,
+            currentReplayData: replayData && replayData.stateAt(this.props.msSinceEpoch),
             timeControls: {
-                autoplay: this.state.autoplay,
-                autoplaySpeed: this.state.autoplaySpeed,
+                autoplay: this.props.autoplay,
+                autoplaySpeed: this.props.autoplaySpeed,
                 startAutoplay: this.startAutoplay,
                 stopAutoplay: this.stopAutoplay,
                 toggleAutoplay: this.toggleAutoplay,

@@ -55,7 +55,8 @@ const HoverableTimePositionedElement = TimePositionedElement`
     }
 `
 
-const Marker = HoverableTimePositionedElement.extend`
+// const Marker = HoverableTimePositionedElement.extend`
+const Marker = styled(HoverableTimePositionedElement)`
     position: absolute;
     top: 23px;
     margin-left: -6px;
@@ -84,19 +85,20 @@ const Marker = HoverableTimePositionedElement.extend`
     }
 `
 
-const KillMarker = Marker.extend`
+//const KillMarker = Marker.extend`
+const KillMarker = styled(Marker)`
     &:hover:before {
         content: "You Killed: ${props => props.victimNames}";
     }
 `
 
-const DeathMarker = Marker.extend`
+const DeathMarker = styled(Marker)`
     &:hover:before {
         content: "Killed By: ${props => props.killerName}";
     }
 `
 
-const DeathMarkerIcon = HoverableTimePositionedElement.extend`
+const DeathMarkerIcon = styled(HoverableTimePositionedElement)`
     position: absolute;
     top: 26px;
     margin-left: -10px;

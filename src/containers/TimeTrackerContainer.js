@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as timeActions from "../store/modules/time";
-import TimeTracker from "../components/Time/TimeTracker"
+import TimeTracker from "../components/Replay/Time/TimeTracker"
 
 class TimeTrackerContainer extends Component {
     handleStartAutoplay = () => {
@@ -13,6 +13,41 @@ class TimeTrackerContainer extends Component {
     handleStopAutoplay = () => {
         const { TimeActions } = this.props;
         TimeActions.stopAutoplay();
+    }
+
+    // handleToggleAutoplay = () => {
+    //     const { TimeActions } = this.props;
+    //     TimeActions.toggleAutoplay();
+    // }
+    
+    handleChangeMsSinceEpochTo = (msSinceEpoch) => {
+        const { TimeActions } = this.props;
+        TimeActions.changeMsSinceEpochTo(msSinceEpoch);     
+    }
+
+    handleChangeAutoplaySpeedTo = (autoplaySpeed) => {
+        const { TimeActions } = this.props;
+        TimeActions.changeAutoplaySpeedTo(autoplaySpeed);     
+    }
+
+    render() {
+        const { autoplaySpeed, msSinceEpoch, autoplay, options, durationSeconds, replayData, render } = this.props;
+        return (
+            <TimeTracker 
+                autoplaySpeed={autoplaySpeed}
+                msSinceEpoch={msSinceEpoch}
+                autoplay={autoplay}
+                startAutoplay={this.handleStartAutoplay}
+                stopAutoplay={this.handleStopAutoplay}
+                // toggleAutoplay={this.handleToggleAutoplay}
+                changeMsSinceEpochTo={this.handleChangeMsSinceEpochTo}
+                changeAutoplaySpeedTo={this.handleChangeAutoplaySpeedTo}
+                options={options}
+                durationSeconds={durationSeconds}
+                replayData={replayData}
+                render={render}
+            />
+        );
     }
 }
 
