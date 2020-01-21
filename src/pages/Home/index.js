@@ -58,9 +58,9 @@ class Home extends Component{
         console.log(this.state.textAreaContent);
         var text ={text:this.state.textAreaContent};
         var textJSON = JSON.stringify(text);
-        console.log(textJSON);
-        axios.post("/api/sendText",textJSON).then(res => {
+        axios.post("/api/sendText",text).then(res => {
             console.log(res.data.text);
+            this.setState({textFileContent:res.data.text})
             alert("전송이 완료되었습니다");
         }).catch(err => {
             alert("전송에 실패하였습니다");

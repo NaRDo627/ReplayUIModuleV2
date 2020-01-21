@@ -45,7 +45,7 @@ app.post("/api/sendFile", function(req, res, next){
 
 app.post("/api/sendText", function(req, res, next){
     console.log("post완료");
+    console.log(req.body);
     console.log(req.body.text);
-     // console.log(data)
-return res.json({text:"짜증"});
+return res.json({text:req.body.text});
 });
