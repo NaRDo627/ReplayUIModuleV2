@@ -34,6 +34,7 @@ const StageWrapper = styled.div`
 const StyledStage = styled(Stage)`
     position: absolute;
     overflow: hidden;
+    margin-left:20%;
     div.konvajs-content {
         overflow: hidden;
         border-radius: 4px;

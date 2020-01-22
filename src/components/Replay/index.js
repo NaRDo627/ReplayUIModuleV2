@@ -12,6 +12,7 @@ import MatchInfo from './MatchInfo.js'
 import KillFeed from "./KillFeed";
 import PlayControls from "./Time/PlayControls";
 import MapOptions from "./MapOptions";
+import {Container, Sprite} from "@inlet/react-pixi";
 
 // -----------------------------------------------------------------------------
 // Styled Components -----------------------------------------------------------
@@ -25,6 +26,7 @@ const MatchContainer = styled.div`
     overflow: visible;
     margin: 0 auto;
     max-height:900px;
+
 `
 //max-width: calc(120vh + 90px);
 const MapContainer = styled.div`
@@ -40,16 +42,16 @@ const RosterContainer = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
     height: ${props => props.mapSize + 48}px;
-    background-color:blue;
+    background-color:grey;
+    padding:5px;
 `
 
 const KillFeedAndMapOptionContainer = styled.div`
     grid-column: 3;
-  
     height: ${props => props.mapSize + 48}px;
     grid-template-rows: ${props => props.mapSize + 48 - 100}px 100px;
-    padding-right: 10px;
-    background-color:yellow;
+    padding:5px;
+    background-color:grey;
 `
 
 const KillFeedContainer = styled.div`
@@ -57,7 +59,6 @@ const KillFeedContainer = styled.div`
     overflow-x: hidden;
     height: ${props => props.mapSize + 48 - 100}px;
     grid-row: 1
-    background-color:orange;
 `
 
 const MapOptionContainer = styled.div`
@@ -68,7 +69,7 @@ const MapOptionContainer = styled.div`
 
 const MatchHeader = styled.div`
     margin: 0 20px 10px 20px;
-    background-color:green;
+    background-color:grey;
     font-size:120px;
 `
 
@@ -210,8 +211,9 @@ class MatchPlayer extends React.Component {
     render() {
         const { match, telemetry, rosters, globalState } = this.props
         const { mapSize, options, setOption, prevPlayerName } = this.state
-
+        const mapImage = require(`../../assets/Pubg/pubgMain.jpg`);
         return (
+
             <Options.Context.Provider value={{ options, setOption }}>
                 <TimeTrackerContainer
                     options={options}
