@@ -24,7 +24,8 @@ const MatchContainer = styled.div`
     border: 0px solid #eee;
     overflow: visible;
     margin: 0 auto;
-    max-width: calc(110vh + 10px);
+    max-width: calc(120vh + 90px);
+    margin-top:40px;
 `
 
 const MapContainer = styled.div`
@@ -32,6 +33,7 @@ const MapContainer = styled.div`
     position: relative;
     cursor: ${props => props.isDotHovered ? 'pointer' : 'normal'};
     display: grid;
+    background-color:grey;
 `
 
 const RosterContainer = styled.div`
@@ -39,7 +41,7 @@ const RosterContainer = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
     height: ${props => props.mapSize + 48}px;
-    padding-right: 10px;
+    background-color:blue;
 `
 
 const KillFeedAndMapOptionContainer = styled.div`
@@ -48,6 +50,7 @@ const KillFeedAndMapOptionContainer = styled.div`
     height: ${props => props.mapSize + 48}px;
     grid-template-rows: ${props => props.mapSize + 48 - 100}px 100px;
     padding-right: 10px;
+    background-color:yellow;
 `
 
 const KillFeedContainer = styled.div`
@@ -55,6 +58,7 @@ const KillFeedContainer = styled.div`
     overflow-x: hidden;
     height: ${props => props.mapSize + 48 - 100}px;
     grid-row: 1
+    background-color:orange;
 `
 
 const MapOptionContainer = styled.div`
@@ -76,14 +80,17 @@ const ControllerContainer = styled.div`
 
 const RosterHeader = styled.div`
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.7rem;
     font-weight: 700;
+    font-family:"나눔스퀘어";
+    margin:10px 0;
 `
 
 const KillFeedHeader = styled.div`
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 2.7rem;
     font-weight: 700;
+    font-family:"나눔스퀘어";
 `
 
 class MatchPlayer extends React.Component {
@@ -206,7 +213,7 @@ class MatchPlayer extends React.Component {
                     render={({ msSinceEpoch, timeControls, currentReplayData }) =>
                         <MatchContainer id="MatchContainer">
                             <RosterContainer mapSize={mapSize}>
-                                <RosterHeader>Name / Kills / Damage</RosterHeader>
+                                <RosterHeader>이름 / 킬수 / 데미지</RosterHeader>
                                 <Roster
                                     match={match}
                                     telemetry={currentReplayData}
@@ -259,7 +266,8 @@ class MatchPlayer extends React.Component {
                             </MapContainer>
                             <KillFeedAndMapOptionContainer mapSize={mapSize}>
                                 <KillFeedContainer mapSize={mapSize}>
-                                    <KillFeedHeader>Kill Feeds</KillFeedHeader>
+
+                                    <KillFeedHeader>킬 피드</KillFeedHeader>
                                     {currentReplayData && <KillFeed focusPlayer={this.marks.focusedPlayer()}
                                                                    teammates={currentReplayData.players[this.marks.focusedPlayer()].teammates}
                                                                    mapSize={mapSize}

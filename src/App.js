@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 // for test
-import Pubg from "./pages/Home"
+import Pubg from "./pages/Pubg"
 
 class App extends Component {
 
