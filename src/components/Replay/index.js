@@ -19,15 +19,14 @@ import MapOptions from "./MapOptions";
 
 const MatchContainer = styled.div`
     display: grid;
-    grid-template-columns: 180px auto 180px;
+    grid-template-columns: 250px auto 250px;
     grid-column-gap: 10px;
     border: 0px solid #eee;
     overflow: visible;
     margin: 0 auto;
-    max-width: calc(120vh + 90px);
-    margin-top:40px;
+    max-height:900px;
 `
-
+//max-width: calc(120vh + 90px);
 const MapContainer = styled.div`
     grid-column: 2;
     position: relative;
@@ -69,6 +68,8 @@ const MapOptionContainer = styled.div`
 
 const MatchHeader = styled.div`
     margin: 0 20px 10px 20px;
+    background-color:green;
+    font-size:120px;
 `
 
 const ControllerContainer = styled.div`
@@ -180,11 +181,17 @@ class MatchPlayer extends React.Component {
 
     updateMapSize = () => {
         const stageWrapper = document.getElementById('StageWrapper')
-
+        console.log(stageWrapper.clientHeight+"높이");
         if (stageWrapper) {
             this.setState(ps => {
-                if (ps.mapSize !== stageWrapper.clientWidth) {
-                    return { mapSize: stageWrapper.clientWidth }
+                // if (ps.mapSize !== stageWrapper.clientWidth) {
+                //     return { mapSize: stageWrapper.clientWidth }
+                //
+                // }
+
+                if (ps.mapSize !== stageWrapper.clientHeight) {
+                    return { mapSize: stageWrapper.clientHeight }
+
                 }
 
                 return null

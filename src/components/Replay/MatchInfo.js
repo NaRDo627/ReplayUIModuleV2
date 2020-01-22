@@ -4,13 +4,15 @@ import styled from 'styled-components'
 import { ordinalSuffix } from 'ordinal-js'
 
 const StyledMatchInfo = styled.div`
-    font-size: 1.2rem;
-    line-height: 1.3rem;
+    font-size: 1.9rem;
+    line-height: 1.9rem;
     margin-bottom: 0;
     margin-right: 20px;
     list-style-type: none;
     grid-template-columns: 180px auto;
     display: grid;
+    font-family:"나눔스퀘어";
+    font-weight:700;
 `
 
 const StyledPlayedAt = styled.div`

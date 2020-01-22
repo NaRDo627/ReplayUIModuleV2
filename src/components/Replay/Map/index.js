@@ -24,11 +24,10 @@ const MAP_SIZES = {
 
 const StageWrapper = styled.div`
     position: relative;
-
     &:after {
         content: "";
         display: block;
-        padding-bottom: 100%;
+        padding-bottom: 60%;
     }
 `
 
